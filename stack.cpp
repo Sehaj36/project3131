@@ -53,22 +53,78 @@ class Stack
         void validPara(std::string pairs)
         {
             // Add your code here
+            std::vector<std::pair<char, int>> stack;
+            for (size_t i= 0; i < pairs.size(); ++i){
+                char a = pairs[i];
+                if(isOpen(a)) {
+                    push(stack,{ a, (int)i});
+                } else if (isClose(a)) {
+                    if(!stack.empty()&& match(top(stack).first, a)){
+                        pop(stack);
+                    } else{
+                        std::cout << "Invalid" << std::endl;
+                        return;
+                    }
+                }
+            }
+            std::cout << (stack.empty() ? "Valid" : "Invalid") << std::endl;
         }
+        //
 
         int indexError(std::string pairs)
         {
             // Add your code here
+            std::vector<std::pair<char, int>> stack;
+            for (size_t i=0; i < pairs.size(); ++i) {
+                char a = pairs[i];
+                if (isOpen(a)) {
+                    push(stack, {a, (int)i});
+                } else if (isClose(a)) {
+                    if (!stack.empty()&& match(top(stack).first, a)){
+                        pop(stack);
+                    }else {
+                        return i;
+                    }
+                }
+            }
+            return stack.empty() ? -1 : stack.front().second;
 
         }
-
+//
         void minPara(std::string pairs)
         {
             // Add your code here
+            std::vector<std::pair<char, int>> stack;
+            for (char a : pairs){
+                if ( isOpen(a)) {
+                    push(stack, {a, -1});
+                } else if (isClose(a)) {
+                    if (!stack.empty()  &&match(top(stack).first, a)){
+                        pop(stack);
+                    } else {
+                        push(stack, {a, -1});
+                    }
+                }
+            }
+            std::cout << stack.size() <<std::endl;
         }
 
         void scorePara(std::string pairs)
         {
             // Add your code here
+            std::vector<std::pair<char, int>> stack;
+            int balanced = 0;
+            for (char a : pairs) {
+                if(isOpen(a)){
+                    push(stack, {a, -1});
+                } else if (isClose(a)){
+                    if (!stack.empty()&& match(top(stack).first, a)){
+                        pop(stack);
+                        ++balanced;
+                    }
+                }
+            }
+            std::cout << balanced << std::endl;
         }
 
 };
