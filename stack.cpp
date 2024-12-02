@@ -57,7 +57,7 @@ class Stack
             for (size_t i= 0; i < pairs.size(); ++i){
                 char a = pairs[i];
                 if(isOpen(a)) {
-                    push(stack,{ a, (int)i});
+                    push(stack, {a, static_cast<int> (i)});
                 } else if (isClose(a)) {
                     if(!stack.empty()&& match(top(stack).first, a)){
                         pop(stack);
@@ -71,19 +71,19 @@ class Stack
         }
         //
 
-        int indexError(std::string pairs)
+        int indexError(const std::string& pairs)
         {
             // Add your code here
             std::vector<std::pair<char, int>> stack;
             for (size_t i=0; i < pairs.size(); ++i) {
                 char a = pairs[i];
                 if (isOpen(a)) {
-                    push(stack, {a, (int)i});
+                    push(stack, {a, static_cast <int> (i)});
                 } else if (isClose(a)) {
                     if (!stack.empty()&& match(top(stack).first, a)){
                         pop(stack);
                     }else {
-                        return i;
+                        return static_cast <int>(i);
                     }
                 }
             }
@@ -91,7 +91,7 @@ class Stack
 
         }
 //
-        void minPara(std::string pairs)
+        void minPara(const std::string& pairs)
         {
             // Add your code here
             std::vector<std::pair<char, int>> stack;
@@ -99,7 +99,7 @@ class Stack
                 if ( isOpen(a)) {
                     push(stack, {a, -1});
                 } else if (isClose(a)) {
-                    if (!stack.empty()  &&match(top(stack).first, a)){
+                    if (!stack.empty() && match(top(stack).first, a)){
                         pop(stack);
                     } else {
                         push(stack, {a, -1});
@@ -151,68 +151,77 @@ class Queue
             return a;
         }
     public:
-        void enqueue(std::string s)
+        void enqueue(const std::string& message)
         {
             // Add your code here
+            for (size_t i = 0; i < message.size(); i+= 8){
+                std::string chuck = message.substr(i,8);
+                queue.push_back(reverse(chuck));
+            }
         }
         void processMsg()
         {
             // Add your code here
+            std::string fullMessage;
+            while (!queue.empty()) {
+                fullMessage += reverse(pop());
+            }
+            std::cout << fullMessage << std::endl;
         }
 };
 
 // Remove comments before testing and do not change anything in main function
 int main(){
-    // Stack s1;
-    // s1.validPara("(([]))");
-    // s1.minPara("(([]))");
-    // s1.scorePara("(([]))");
-    // s1.validPara("(([])");
-    // std::cout<<s1.indexError("(([))")<<std::endl;
-    // s1.minPara("(([])");
-    // s1.validPara("(([{}))");
-    // std::cout<<s1.indexError("(([[}])")<<std::endl; 
-    // s1.minPara("(([{}))");
-    // s1.scorePara("(([{}))");
-    // std::cout<<s1.indexError("({}[]()[)")<<std::endl;
-    // s1.validPara("(([))");
-    // s1.minPara("(([))");
-    // std::cout<<s1.indexError("[({)]")<<std::endl;
-    // s1.validPara("(([{[{({})}]}]))");
-    // s1.minPara("(([{[{({})}]}]))");
-    // s1.scorePara("(([{[{({})}]}]))");
-    // s1.validPara("(([[{[{({})}]))");
-    // s1.validPara("(([[{[{({})}]}])]))");
-    // s1.scorePara("(([[{[{({})}]}])]))");
-    // std::cout<<s1.indexError("(([[{{({})]}])]))")<<std::endl;
-    // s1.validPara("(())");
-    // s1.validPara("(())");
-    // s1.validPara("void function(){}");
-    // s1.scorePara("void function(){}");
-    // s1.validPara("void function(");
-    // s1.minPara("void function(");
-    // s1.validPara("void function(std::string expre){if(expre){return 1;}else{return 0;}}");
-    // s1.scorePara("void function(std::string expre){if(expre){return 1;}else{return 0;}}");
-    // s1.validPara("void function(std::string expre){if(expre){return 1;}else{return 0;}");
-    // s1.validPara("void function(std::string expre){if(expre){return 1;else{return 0;");
-    // s1.minPara("void function(std::string expre){if(expre){return 1;else{return 0;");
-    // std::cout<<s1.indexError("void function(std::string expre){if(expre){return 1;else{return 0;")<<std::endl;
-    // Queue q1;
-    // q1.enqueue("This is a secure message.");
-    // q1.processMsg();
-    // q1.enqueue("The product I received is damaged. What should I do?");
-    // q1.processMsg();
-    // q1.enqueue("I need assistance with setting up my new device");
-    // q1.processMsg();
-    // q1.enqueue("The website is not loading properly on my browser.");
-    // q1.processMsg();
-    // q1.enqueue("I accidentally placed the wrong order. Can it be canceled?");
-    // q1.processMsg();
-    // q1.enqueue("This is your project3. Have a happy thanksgiving!!! Hahaha");
-    // q1.processMsg();
-    // q1.enqueue("I forgot my password and can't reset it. Help, please! Do you provide technical support for mobile devices?");
-    // q1.processMsg();
-    // q1.enqueue("The software update is causing issues on my computer. The response time on your website is very slow.");
-    // q1.processMsg();
+    Stack s1;
+    s1.validPara("(([]))");
+    s1.minPara("(([]))");
+    s1.scorePara("(([]))");
+    s1.validPara("(([])");
+    std::cout<<s1.indexError("(([))")<<std::endl;
+    s1.minPara("(([])");
+    s1.validPara("(([{}))");
+    std::cout<<s1.indexError("(([[}])")<<std::endl; 
+    s1.minPara("(([{}))");
+    s1.scorePara("(([{}))");
+    std::cout<<s1.indexError("({}[]()[)")<<std::endl;
+    s1.validPara("(([))");
+    s1.minPara("(([))");
+    std::cout<<s1.indexError("[({)]")<<std::endl;
+    s1.validPara("(([{[{({})}]}]))");
+    s1.minPara("(([{[{({})}]}]))");
+    s1.scorePara("(([{[{({})}]}]))");
+    s1.validPara("(([[{[{({})}]))");
+    s1.validPara("(([[{[{({})}]}])]))");
+    s1.scorePara("(([[{[{({})}]}])]))");
+    std::cout<<s1.indexError("(([[{{({})]}])]))")<<std::endl;
+    s1.validPara("(())");
+    s1.validPara("(())");
+    s1.validPara("void function(){}");
+    s1.scorePara("void function(){}");
+    s1.validPara("void function(");
+    s1.minPara("void function(");
+    s1.validPara("void function(std::string expre){if(expre){return 1;}else{return 0;}}");
+    s1.scorePara("void function(std::string expre){if(expre){return 1;}else{return 0;}}");
+    s1.validPara("void function(std::string expre){if(expre){return 1;}else{return 0;}");
+    s1.validPara("void function(std::string expre){if(expre){return 1;else{return 0;");
+    s1.minPara("void function(std::string expre){if(expre){return 1;else{return 0;");
+    std::cout<<s1.indexError("void function(std::string expre){if(expre){return 1;else{return 0;")<<std::endl;
+    Queue q1;
+    q1.enqueue("This is a secure message.");
+    q1.processMsg();
+    q1.enqueue("The product I received is damaged. What should I do?");
+    q1.processMsg();
+    q1.enqueue("I need assistance with setting up my new device");
+    q1.processMsg();
+    q1.enqueue("The website is not loading properly on my browser.");
+    q1.processMsg();
+    q1.enqueue("I accidentally placed the wrong order. Can it be canceled?");
+    q1.processMsg();
+    q1.enqueue("This is your project3. Have a happy thanksgiving!!! Hahaha");
+    q1.processMsg();
+    q1.enqueue("I forgot my password and can't reset it. Help, please! Do you provide technical support for mobile devices?");
+    q1.processMsg();
+    q1.enqueue("The software update is causing issues on my computer. The response time on your website is very slow.");
+    q1.processMsg();
     return 0;
 }
